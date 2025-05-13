@@ -1,5 +1,5 @@
-IMAGE_NAME := "ghcr.io/"
-IMAGE_TAG  ?= "4h"
+IMAGE_NAME := "ghcr.io/stackitcloud/designate-certmanager-webhook"
+IMAGE_TAG  ?= $(shell git describe --tags --always --dirty)
 
 build:
 	docker build -t "$(IMAGE_NAME):$(IMAGE_TAG)" .
