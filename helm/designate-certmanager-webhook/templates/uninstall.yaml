@@ -7,7 +7,7 @@ metadata:
     chart: {{ include "designate-certmanager-webhook.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
-  namespace: default
+  namespace: {{ .Release.Namespace }}
   annotations:
     "helm.sh/hook": pre-delete
     "helm.sh/hook-delete-policy": hook-succeeded
@@ -15,7 +15,7 @@ spec:
   template:
     spec:
       restartPolicy: Never
-      serviceAccountName: {{ include "designate-certmanager-webhook.fullname" . }}
+      serviceAccountName: {{ include "designate-certmanager-webhook.fullname" . }}-uninstall
       containers:
         - name: remove-apiservice
           image: "{{ .Values.kubectl.image.repository }}:{{ .Values.kubectl.image.tag }}"
@@ -74,13 +74,13 @@ roleRef:
 subjects:
   - apiGroup: ""
     kind: ServiceAccount
-    name: {{ include "designate-certmanager-webhook.fullname" . }}
-    namespace: default
+    name: {{ include "designate-certmanager-webhook.fullname" . }}-uninstall
+    namespace: {{ .Release.Namespace }}
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "designate-certmanager-webhook.fullname" . }}
+  name: {{ include "designate-certmanager-webhook.fullname" . }}-uninstall
   labels:
     app: {{ include "designate-certmanager-webhook.name" . }}
     chart: {{ include "designate-certmanager-webhook.chart" . }}
@@ -89,4 +89,4 @@ metadata:
   annotations:
     "helm.sh/hook": pre-delete
     "helm.sh/hook-delete-policy": hook-succeeded
-  namespace: default
+  namespace: {{ .Release.Namespace }}
