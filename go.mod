@@ -116,4 +116,4 @@ require (
 	sigs.k8s.io/yaml v1.4.0 // indirect
 )
 
-replace git.apache.org/thrift.git => github.com/apache/thrift v0.13.0
+replace git.apache.org/thrift.git => github.com/apache/thrift v0.22.0
