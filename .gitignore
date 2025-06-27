@@ -2,3 +2,5 @@
 /_out
 testcertificate.yaml
 /vendor
+
+/designate-certmanager-webhook
