@@ -9,6 +9,7 @@ check:
 		find . -not \( \( -wholename "./vendor" \) -prune \) -name "*.go" | xargs gofmt -d; \
 		exit 1; \
 	fi
+	go build .
 
 test:
 	docker build --file Dockerfile_test . -t $(IMAGE_NAME)-test
