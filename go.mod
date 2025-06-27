@@ -6,13 +6,13 @@ toolchain go1.24.4
 
 // We can upgrade all dependencies once https://github.com/cert-manager/cert-manager/commit/ad3b6fbcefe8d7e22a0b39e42473a4a2e7a72d0f is released (>v1.18.1)
 // Otherwise there are conflicts between diffent versions of the k8s.io libraries
-replace k8s.io/client-go => k8s.io/client-go v0.32.6
+replace k8s.io/client-go => k8s.io/client-go v0.33.2
 
 require (
 	github.com/cert-manager/cert-manager v1.17.2
 	github.com/gophercloud/gophercloud v0.14.0
 	github.com/sirupsen/logrus v1.9.3
-	k8s.io/client-go v0.33.0
+	k8s.io/client-go v0.33.2
 	sigs.k8s.io/external-dns v0.17.0
 )
 
@@ -101,9 +101,9 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/natefinch/lumberjack.v2 v2.2.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	k8s.io/api v0.33.0 // indirect
+	k8s.io/api v0.33.2 // indirect
 	k8s.io/apiextensions-apiserver v0.32.3 // indirect
-	k8s.io/apimachinery v0.33.0 // indirect
+	k8s.io/apimachinery v0.33.2 // indirect
 	k8s.io/apiserver v0.32.3 // indirect
 	k8s.io/component-base v0.32.3 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
