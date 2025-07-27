@@ -9,15 +9,6 @@ image:
   tag: # defaults to app version
   pullPolicy: IfNotPresent
 
-alpine:
-  image:
-    repository: alpine
-    tag: latest
-kubectl:
-  image:
-    repository: bitnami/kubectl
-    tag: latest
-
 imagePullSecrets: []
 
 # This secret holds the authenitcation information for designate

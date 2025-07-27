@@ -26,36 +26,6 @@ spec:
       serviceAccountName: {{ include "designate-certmanager-webhook.fullname" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
-      initContainers:
-        - name: wait-for-tls-secret
-          image: "{{ .Values.alpine.image.repository }}:{{ .Values.alpine.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          volumeMounts:
-          - name: certs
-            mountPath: /tls
-            readOnly: true
-          command:
-            - /bin/sh
-          args:
-            - -c
-            - "while [ ! -f /tls/tls.key ]; do sleep 5; done"
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-        - name: add-apiservice
-          image: "{{ .Values.kubectl.image.repository }}:{{ .Values.kubectl.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          volumeMounts:
-            - name: apiservice-config
-              mountPath: /config
-              readOnly: true
-          command:
-            - kubectl
-          args:
-            - apply
-            - -f
-            - /config/apiservice.yaml
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ default .Chart.AppVersion .Values.image.tag }}"
