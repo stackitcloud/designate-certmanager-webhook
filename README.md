@@ -38,8 +38,12 @@ kubectl --namespace cert-manager create secret generic cloud-credentials \
 
 For now, we do not host a chart repository. To use this chart, you must clone this repository. Edit the values.yaml file and add your OpenStack settings if you did not create the secret before. Then you can install the helm chart with the command:
 
-```
-helm install --name designate-certmanager --namespace=cert-manager designate-certmanager-webhook
+```bash
+helm upgrade --install \
+  --namespace=cert-manager \
+  oci://ghcr.io/stackitcloud/charts/designate-certmanager-webhook \
+  designate-certmanager
+
 ```
 
 ## Configuration
