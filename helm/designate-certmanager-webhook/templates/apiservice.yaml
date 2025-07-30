@@ -18,7 +18,10 @@ data:
         chart: {{ include "designate-certmanager-webhook.chart" . }}
         release: {{ .Release.Name }}
         heritage: {{ .Release.Service }}
+        app.kubernetes.io/managed-by: "Helm"
       annotations:
+        meta.helm.sh/release-name: {{ .Release.Name }}
+        meta.helm.sh/release-namespace: {{ .Release.Namespace }}
         cert-manager.io/inject-ca-from: "{{ .Release.Namespace }}/{{ include "designate-certmanager-webhook.servingCertificate" . }}"
     spec:
       group: acme.syseleven.de
