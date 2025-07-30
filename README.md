@@ -1,18 +1,35 @@
 # ACME webhook Implementation for OpenStack Designate
 
-This is an ACME webhook implementation for the [cert-manager](http://docs.cert-manager.io). It works with OpenStack Designate DNSaaS to generate certificates using DNS-01 challenges.
+This is an ACME webhook implementation for the
+[cert-manager](http://docs.cert-manager.io). It works with OpenStack Designate
+DNSaaS to generate certificates using DNS-01 challenges.
+
+It was originally forked from
+[syseleven/designate-certmanager-webhook](https://github.com/syseleven/designate-certmanager-webhook)
+because it was no longer updated.
 
 ## Prerequisites
 
-To use this chart [Helm](https://helm.sh/) must be installed in your Kubernetes cluster. Setting up Kubernetes and Helm and is outside the scope of this README. Please refer to the Kubernetes and Helm documentation. You will also need the [cert-manager](https://github.com/cert-manager/cert-manager). Please refer to the cert-manager [documentation](https://docs.cert-manager.io) for full technical documentation for the project. This README assumes, the cert-manager is installed in the namespace `cert-manager`. Adapt examples accordingly, if you have installed it in a different namespace.
+To use this chart [Helm](https://helm.sh/) must be installed in your Kubernetes
+cluster. Setting up Kubernetes and Helm and is outside the scope of this README.
+Please refer to the Kubernetes and Helm documentation. You will also need the
+[cert-manager](https://github.com/cert-manager/cert-manager). Please refer to
+the cert-manager [documentation](https://docs.cert-manager.io) for full
+technical documentation for the project. This README assumes, the cert-manager
+is installed in the namespace `cert-manager`. Adapt examples accordingly, if you
+have installed it in a different namespace.
 
 ## Deployment
 
-***Optional*** You can choose to pre-create your authentication secret or configure the values via helm. If you don't want to configure your credentials via helm, create a kubernetes secret in the cert-manager namespace (or where you have deployed cert-manager, with the SysEleven addon it is _syseleven-cert-manager_) containing your OpenStack credentials and the project ID with the DNS zone you would like to use:
+***Optional*** You can choose to pre-create your authentication secret or
+configure the values via helm. If you don't want to configure your credentials
+via helm, create a kubernetes secret in the cert-manager namespace containing
+your OpenStack credentials and the project ID with the DNS zone you would like
+to use:
 
 ### Secret with OpenStack User Credentials
 
-```
+```bash
 kubectl --namespace cert-manager create secret generic cloud-credentials \
   --from-literal=OS_AUTH_URL=<OpenStack Authentication URL> \
   --from-literal=OS_DOMAIN_NAME=<OpenStack Domain> \
@@ -24,7 +41,7 @@ kubectl --namespace cert-manager create secret generic cloud-credentials \
 
 ### Secret with OpenStack Application Credentials
 
-```
+```bash
 kubectl --namespace cert-manager create secret generic cloud-credentials \
   --from-literal=OS_AUTH_URL=<OpenStack Authentication URL> \
   --from-literal=OS_DOMAIN_NAME=<OpenStack Domain> \
@@ -36,7 +53,10 @@ kubectl --namespace cert-manager create secret generic cloud-credentials \
 
 ### Chart deployment
 
-For now, we do not host a chart repository. To use this chart, you must clone this repository. Edit the values.yaml file and add your OpenStack settings if you did not create the secret before. Then you can install the helm chart with the command:
+For now, we do not host a chart repository. To use this chart, you must clone
+this repository. Edit the values.yaml file and add your OpenStack settings if
+you did not create the secret before. Then you can install the helm chart with
+the command:
 
 ```bash
 helm upgrade --install \
@@ -48,9 +68,12 @@ helm upgrade --install \
 
 ## Configuration
 
-To configure your Issuer or ClusterIssuer to use this webhook as a DNS-01 solver use the following reference for a ClusterIssuer template. To use this in production please replace the reference to the Letsencrypt staging api accordingly:
+To configure your Issuer or ClusterIssuer to use this webhook as a DNS-01 solver
+use the following reference for a ClusterIssuer template. To use this in
+production please replace the reference to the Letsencrypt staging api
+accordingly:
 
-```
+```yaml
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
@@ -73,9 +96,11 @@ spec:
           solverName: designatedns
 ```
 
-You are now ready to create you first certificate resource. The easiest way to accomplish this is to add an annotation to an Ingress rule. Please adapt this example for your own needs:
+You are now ready to create you first certificate resource. The easiest way to
+accomplish this is to add an annotation to an Ingress rule. Please adapt this
+example for your own needs:
 
-```
+```yaml
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
