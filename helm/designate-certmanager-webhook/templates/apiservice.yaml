@@ -18,7 +18,7 @@ data:
         chart: {{ include "designate-certmanager-webhook.chart" . }}
         release: {{ .Release.Name }}
         heritage: {{ .Release.Service }}
-        app.kubernetes.io/managed-by: "Helm"
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
       annotations:
         meta.helm.sh/release-name: {{ .Release.Name }}
         meta.helm.sh/release-namespace: {{ .Release.Namespace }}
