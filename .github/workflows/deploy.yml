@@ -51,5 +51,6 @@ jobs:
     - name: Package and push Helm chart
       working-directory: helm
       run: |
-        helm package designate-certmanager-webhook --version ${{ github.ref_name }} --app-version ${{ github.ref_name }}
+        HELM_VERSION="$(echo "${{ github.ref_name }}" | sed 's/^v//')"
+        helm package designate-certmanager-webhook --version "$HELM_VERSION" --app-version ${{ github.ref_name }}
         helm push *.tgz oci://${{ env.REGISTRY }}/${{ github.repository_owner }}/charts
