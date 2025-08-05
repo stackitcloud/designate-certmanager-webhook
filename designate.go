@@ -23,7 +23,7 @@ import (
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/openstack"
 	log "github.com/sirupsen/logrus"
-	"sigs.k8s.io/external-dns/pkg/tlsutils"
+	"github.com/stackitcloud/designate-certmanager-webhook/tlsutils"
 )
 
 // copies environment variables to new names without overwriting existing values
