@@ -2,7 +2,7 @@ module github.com/stackitcloud/designate-certmanager-webhook
 
 go 1.24.2
 
-toolchain go1.24.5
+toolchain go1.25.0
 
 // We can upgrade all dependencies once https://github.com/cert-manager/cert-manager/commit/ad3b6fbcefe8d7e22a0b39e42473a4a2e7a72d0f is released (>v1.18.1)
 // Otherwise there are conflicts between diffent versions of the k8s.io libraries
