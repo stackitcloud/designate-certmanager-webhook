@@ -22,6 +22,7 @@ import (
 
 	"github.com/gophercloud/gophercloud"
 	"github.com/gophercloud/gophercloud/openstack"
+    "github.com/gophercloud/utils/openstack/clientconfig"
 	log "github.com/sirupsen/logrus"
 	"github.com/stackitcloud/designate-certmanager-webhook/tlsutils"
 )
@@ -41,25 +42,21 @@ func remapEnv(mapping map[string]string) {
 // also fixes incompatibilities between gophercloud implementation and *-stackrc files that can be downloaded
 // from OpenStack dashboard in latest versions
 func getAuthSettings() (gophercloud.AuthOptions, error) {
-	remapEnv(map[string]string{
-		"OS_TENANT_NAME": "OS_PROJECT_NAME",
-		"OS_TENANT_ID":   "OS_PROJECT_ID",
-		"OS_DOMAIN_NAME": "OS_USER_DOMAIN_NAME",
-		"OS_DOMAIN_ID":   "OS_USER_DOMAIN_ID",
-	})
+    ao, err := clientconfig.AuthOptions(nil) // if nil, clouds.yaml will be used
+    if err != nil {
+        return gophercloud.AuthOptions{}, err
+    }
 
-	opts, err := openstack.AuthOptionsFromEnv()
-	if err != nil {
-		return gophercloud.AuthOptions{}, err
-	}
-	opts.AllowReauth = true
-	if !strings.HasSuffix(opts.IdentityEndpoint, "/") {
-		opts.IdentityEndpoint += "/"
-	}
-	if !strings.HasSuffix(opts.IdentityEndpoint, "/v2.0/") && !strings.HasSuffix(opts.IdentityEndpoint, "/v3/") {
-		opts.IdentityEndpoint += "v2.0/"
-	}
-	return opts, nil
+    ao.AllowReauth = true
+
+    if !strings.HasSuffix(ao.IdentityEndpoint, "/") {
+        ao.IdentityEndpoint += "/"
+    }
+    if !strings.HasSuffix(ao.IdentityEndpoint, "/v2.0/") && !strings.HasSuffix(ao.IdentityEndpoint, "/v3/") {
+        ao.IdentityEndpoint += "v3/"
+    }
+
+    return *ao, nil
 }
 
 // authenticate in OpenStack and obtain Designate service endpoint

@@ -11,13 +11,24 @@ image:
 
 imagePullSecrets: []
 
-# This secret holds the authenitcation information for designate
+# This secret holds the authentication information for designate
+# Will be ignored if `useClouds: true`
 credentialsSecret: cloud-credentials
+
+# To use a clouds.yaml file enable useClouds and create a Secret from the
+# clouds.yaml file with the name below. The cloud name in the clouds.yaml
+# must be the same as identityRef.cloudName. This will mount the clouds.yaml to
+# /etc/openstack and adds the environment variable OS_CLOUD=<identityRef.cloudName>
+useClouds: false
+identityRef:
+  name: clouds-yaml
+  cloudName: openstack
 
 # If you fill out these information the helm chart will use your provided
 # information and overwrite an existing ${credentialsSecret} secret. If the values
 # are kept empty, you must create a secret with desired values manually. Please
 # refer to the README for more information.
+# Will be ignored if `useClouds: true`
 openstack:
   username: ""
   password: ""
