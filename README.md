@@ -61,9 +61,8 @@ the command:
 ```bash
 helm upgrade --install \
   --namespace=cert-manager \
-  oci://ghcr.io/stackitcloud/charts/designate-certmanager-webhook \
-  designate-certmanager
-
+  designate-certmanager \
+  oci://ghcr.io/stackitcloud/charts/designate-certmanager-webhook
 ```
 
 ## Configuration
