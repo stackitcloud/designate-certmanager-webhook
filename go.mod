@@ -11,7 +11,7 @@ replace k8s.io/client-go => k8s.io/client-go v0.33.3
 require (
 	github.com/cert-manager/cert-manager v1.17.2
 	github.com/gophercloud/gophercloud v0.14.0
-	github.com/sirupsen/logrus v1.9.3
+	github.com/sirupsen/logrus v1.9.4
 	github.com/stretchr/testify v1.10.0
 	k8s.io/client-go v0.33.3
 )
