@@ -27,7 +27,8 @@ via helm, create a kubernetes secret in the cert-manager namespace containing
 your OpenStack credentials and the project ID with the DNS zone you would like
 to use:
 
-### Secret with OpenStack User Credentials
+### Option 1: Use environment variables
+#### Secret with OpenStack User Credentials
 
 ```bash
 kubectl --namespace cert-manager create secret generic cloud-credentials \
@@ -39,7 +40,7 @@ kubectl --namespace cert-manager create secret generic cloud-credentials \
   --from-literal=OS_PASSWORD=<OpenStack Password>
 ```
 
-### Secret with OpenStack Application Credentials
+#### Secret with OpenStack Application Credentials
 
 ```bash
 kubectl --namespace cert-manager create secret generic cloud-credentials \
@@ -49,6 +50,13 @@ kubectl --namespace cert-manager create secret generic cloud-credentials \
   --from-literal=OS_APPLICATION_CREDENTIAL_ID=<OpenStack Application Credential ID> \
   --from-literal=OS_APPLICATION_CREDENTIAL_NAME=<OpenStack Application Credential name> \
   --from-literal=OS_APPLICATION_CREDENTIAL_SECRET=<OpenStack Application Credential Secret value>
+```
+
+### Option 2: Use clouds.yaml for authentication
+
+```bash
+kubectl --namespace cert-manager create secret generic clouds-yaml \
+  --from-file=clouds.yaml=<path to clouds.yaml>
 ```
 
 ### Chart deployment
@@ -61,9 +69,8 @@ the command:
 ```bash
 helm upgrade --install \
   --namespace=cert-manager \
-  oci://ghcr.io/stackitcloud/charts/designate-certmanager-webhook \
-  designate-certmanager
-
+  designate-certmanager \
+  oci://ghcr.io/stackitcloud/charts/designate-certmanager-webhook # --set useClouds=true # if clouds.yaml is used as secret
 ```
 
 ## Configuration

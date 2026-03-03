@@ -34,9 +34,15 @@ spec:
             - --tls-cert-file=/tls/tls.crt
             - --tls-private-key-file=/tls/tls.key
             - --secure-port=8443
+          {{- if not .Values.useClouds }}
           envFrom:
             - secretRef:
                 name: {{ .Values.credentialsSecret }}
+          {{- else }}
+          env:
+            - name: OS_CLOUD
+              value: {{ .Values.identityRef.cloudName }}
+          {{- end }}
           ports:
             - name: https
               containerPort: 8443
@@ -55,6 +61,11 @@ spec:
             - name: certs
               mountPath: /tls
               readOnly: true
+            {{- if .Values.useClouds }}
+            - name: clouds-config
+              mountPath: /etc/openstack
+              readOnly: true
+            {{- end }}
             {{- if .Values.extraVolumeMounts }}
             {{- toYaml .Values.extraVolumeMounts | nindent 12}}
             {{- end }}
@@ -70,6 +81,11 @@ spec:
           secret:
             optional: true
             secretName: {{ include "designate-certmanager-webhook.servingCertificate" . }}
+        {{- if .Values.useClouds }}
+        - name: clouds-config
+          secret:
+            secretName: {{ .Values.identityRef.name }}
+        {{- end }}
         {{- if .Values.extraVolumes }}
         {{- toYaml .Values.extraVolumes | nindent 8}}
         {{- end }}
