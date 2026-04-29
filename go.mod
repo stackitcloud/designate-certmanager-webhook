@@ -4,7 +4,7 @@ go 1.25.0
 
 require (
 	github.com/cert-manager/cert-manager v1.20.2
-	github.com/gophercloud/gophercloud v0.14.0
+	github.com/gophercloud/gophercloud v0.25.0
 	github.com/sirupsen/logrus v1.9.4
 	github.com/stretchr/testify v1.11.1
 	k8s.io/client-go v0.35.4
